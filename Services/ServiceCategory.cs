@@ -7,7 +7,7 @@ namespace ReadBookMuds.Services
     {
         public async Task<List<Category>> GetCategories()
         {
-            var items = _context.Categories.ToList();
+            var items = await _context.Categories.ToListAsync();
             return items;
         }
         public async Task<Category> GetSingleCategory(int id)
