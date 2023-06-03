@@ -1,14 +1,15 @@
-﻿@page "/categories"
+﻿
+@page "/categories"
 @using ReadBookMuds.Services
 @using ReadBookMuds.Models
-
 @inject Service ServiceCategy
+@inject IDialogService DialogService
 
 <PageTitle>Categories</PageTitle>
 
 <div class="row d-flex mb-3">
     <div class="col-md-4 d-flex justify-content-between">
-        <MudButton Variant="Variant.Filled" Size="@Size.Medium" StartIcon="@Icons.Material.Filled.Add" Link="/createcategory" Color="Color.Primary">Add</MudButton>
+        <MudButton Variant="Variant.Filled" Size="@Size.Medium" StartIcon="@Icons.Material.Filled.Add" Href="/createcategory" Color="Color.Primary">Add</MudButton>
         <MudButton Variant="Variant.Filled" Size="@Size.Medium" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete Selected</MudButton>
     </div>
 </div>
@@ -20,8 +21,8 @@
         <TemplateColumn CellClass="p-0 m-0">
             <CellTemplate>
                 <MudStack Row>
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete"></MudIconButton>
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Edit" Link="@string.Concat("/editcategory/", context.Item.Id)"></MudIconButton>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete" @onclick="@(()=>Delete(context.Item.Id))"></MudIconButton>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Edit" Href="@string.Concat("/editcategory/", context.Item.Id)"></MudIconButton>
                 </MudStack>
             </CellTemplate>
         </TemplateColumn>
@@ -30,12 +31,29 @@
 
 @code {
     public List<Category> Categories;
+
+
     protected override async Task OnInitializedAsync()
     {
         Categories = await ServiceCategy.GetCategories();
     }
 
 
+    private async void Delete(int id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Are you sure you want to remove this category");
+        parameters.Add("ButtonText", "Yes");
+        parameters.Add("Color", Color.Success);
+
+        var result = await DialogService.Show<Dialog>("Confirm", parameters).Result;
+        if (!result.Canceled)
+        {
+            var resultdelete = await ServiceCategy.DeleteCategory(id);
+            Categories = await ServiceCategy.GetCategories();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
 
 
 

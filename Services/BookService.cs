@@ -67,25 +67,25 @@ namespace ReadBookMuds.Services
             }
             return book;
         }
-        public async Task<Book> DeleteBook(Book book)
+        public async Task<Book> DeleteBook(int id)
         {
-            var bookToDelete = _context.Books.Where(i => i.Id == book.Id).FirstOrDefault();
+            var bookToDelete = _context.Books.Where(i => i.Id == id).FirstOrDefault();
             if (bookToDelete == null)
             {
                 throw new Exception("The book not exsit ");
             }
-            _context.Books.Remove(book);
+            _context.Entry(bookToDelete).State = EntityState.Detached;
+            _context.Books.Remove(bookToDelete);
             try
             {
-                _context.Entry(book).State = EntityState.Deleted;
                 _context.SaveChanges();
             }
             catch (Exception ex)
             {
-                _context.Entry(book).State = EntityState.Unchanged;
+                _context.Entry(bookToDelete).State = EntityState.Unchanged;
                 throw;
             }
-            return book;
+            return bookToDelete;
         }
     }
 }

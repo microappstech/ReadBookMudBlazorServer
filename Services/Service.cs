@@ -1,14 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
 using ReadBookMuds.Data;
 
 namespace ReadBookMuds.Services
 {
     public partial class Service
     {
+        
         private readonly ReadBookContext _context;
-        public Service(ReadBookContext context)
+        private readonly NavigationManager UriHelper;
+        public Service(ReadBookContext context, NavigationManager navigation)
         {
             this._context = context;    
+            this.UriHelper = navigation;
         }
         public void Reset()
         {

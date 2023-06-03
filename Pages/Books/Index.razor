@@ -1,6 +1,6 @@
 ﻿@page "/books"
-@using ReadBookMuds.Services
-@using ReadBookMuds.Models
+
+@inject IDialogService DialogServicee
 
 @inject Service ServiceBook
 
@@ -37,8 +37,8 @@
         <TemplateColumn CellClass="p-0 m-0">
             <CellTemplate>
                 <MudStack Row>
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete" Link=""></MudIconButton>
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Edit" Link="@string.Concat("/editbook/",@context.Item.Id.ToString())"></MudIconButton>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete" @onclick ="@(()=>Confirm(context.Item.Id))"></MudIconButton>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Edit" Href="@string.Concat("/editbook/",@context.Item.Id.ToString())"></MudIconButton>
                 </MudStack>
             </CellTemplate>
         </TemplateColumn>
@@ -51,9 +51,24 @@
     {
         Books = await ServiceBook.GetBooks();
     }
-    
 
 
+
+    private async void Confirm(int id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Are you sure you want to remove this book");
+        parameters.Add("ButtonText", "Yes");
+        parameters.Add("Color", Color.Success);
+
+        var result = await DialogServicee.Show<Dialog>("Confirm", parameters).Result;
+        if (!result.Cancelled)
+        {
+            var resultdelete = await ServiceBook.DeleteBook(id);
+            Books = await ServiceBook.GetBooks();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
 
 
 

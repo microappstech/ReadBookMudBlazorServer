@@ -7,11 +7,12 @@
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
-            <MudForm @ref="formCate" @bind-IsValid="success" @bind-Errors="errors" OnValidSubmit="Save">
+            <MudForm @ref="formCate" @bind-IsValid="success"  @bind-Errors="errors">
                 <MudTextField T="string" Label="Description" Required="true" @bind-Value="@Category.Name" RequiredError="Description is Required"></MudTextField>
                 
                 <div class="d-flex align-center justify-space-between">
-                    <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" OnClick="Save" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Save" Disabled="@(!success)" Class="ml-auto">Save</MudButton>
+                    <button @onclick="@(()=>Save())">Test </button>
+                    <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" @onclick="@(()=>Save())" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Save" Disabled="@(!success)" Class="ml-auto">Save</MudButton>
                 </div>
             </MudForm>
         </MudPaper>
@@ -26,18 +27,27 @@
 @code {
     MudForm formCate;
     public Category Category ;
+    [Inject]
+    protected NavigationManager UriHelper { get; set; }
     protected override async Task OnInitializedAsync()
     {
         Category  = new Category();
     }
     public async Task Save()
     {
-        var resultSave = await ServiceCategory.CreateCategory(Category);
-        if(resultSave!= null)
+        try
         {
+            var resultSave = await ServiceCategory.CreateCategory(Category);
+            if(resultSave!=null){
+                await InvokeAsync(StateHasChanged);
+                UriHelper.NavigateTo("/categories",true);
+            }
+        }
+        catch(Exception ex)
+        {
+            
         }
 
-        NavigationManager.NavigateTo("/books/");
 
     }
 

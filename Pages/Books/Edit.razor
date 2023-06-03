@@ -3,6 +3,7 @@
 @using System.ComponentModel.DataAnnotations
 @inject Service ServiceBook
 
+
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
@@ -89,6 +90,8 @@
 @code {
     [Parameter]
     public int Id { get; set; }
+    [Inject]
+    NavigationManager uriHelper { get; set; }
     public Book book { get; set; }
     List<Category> Categories = new List<Category>();
 
@@ -116,6 +119,7 @@
     public async Task Save()
     {
         var resultSave = await ServiceBook.EditBook(book);
+        uriHelper.NavigateTo("/books", true);
     }
 
 }

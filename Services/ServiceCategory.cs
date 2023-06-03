@@ -20,7 +20,7 @@ namespace ReadBookMuds.Services
             try
             {
                 _context.Categories.Add(category);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -29,24 +29,24 @@ namespace ReadBookMuds.Services
             }
             return category;
         }
-        public async Task<Category> DeleteCategory(Category category)
+        public async Task<Category> DeleteCategory(int id)
         {
-            var IsExist = _context.Categories.FindAsync(category);
-            if (IsExist != null)
+            var IsExist =await _context.Categories.FindAsync(id);
+            if (IsExist == null)
             {
                 throw new Exception("Category no longer exist");
             }
-            _context.Categories.Remove(category);
+            _context.Categories.Remove(IsExist);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _context.Entry(category).State = EntityState.Detached;
+                _context.Entry(IsExist).State = EntityState.Detached;
                 throw;
             }
-            return category;
+            return IsExist;
         }
         public async Task<Category> EditCategory(Category category)
         {
