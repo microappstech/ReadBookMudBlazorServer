@@ -32,7 +32,7 @@
     }
     public async Task Save()
     {
-        var resultSave = await ServiceCategory.EditCategory(Category);
+        var resultSave = await ServiceCategory.EditCategory(id, Category);
         NavigationManager.NavigateTo("/categories", true);
     }
 

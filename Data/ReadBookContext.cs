@@ -17,6 +17,7 @@ namespace ReadBookMuds.Data
                 .HasColumnType("datetime");
             builder.Entity<Book>().
                 HasKey(i => i.Id);
+            
             builder.Entity<Category>().
                 HasKey(c => c.Id);
 
