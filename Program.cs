@@ -28,7 +28,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddDbContext<ReadBookContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-},ServiceLifetime.Transient);
+});
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();

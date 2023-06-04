@@ -1,10 +1,13 @@
 ﻿using ReadBookMuds.Models;
 using Microsoft.EntityFrameworkCore;
+using static MudBlazor.Defaults;
+using System.Security.Claims;
 
 namespace ReadBookMuds.Services
 {
     public partial class Service
     {
+
         public async Task<List<Category>> GetCategories()
         {
             var items = _context.Categories.ToList();
@@ -48,25 +51,29 @@ namespace ReadBookMuds.Services
             }
             return IsExist;
         }
-        public async Task<Category> EditCategory(Category category)
+        public async Task<Category> EditCategory(int id,Category category)
         {
-            var IsExist = _context.Categories.FindAsync(category);
-            if (IsExist != null)
+            var IsExist = await Context.Categories.FindAsync(id);
+            if (IsExist == null)
             {
                 throw new Exception("Category no longer exist");
             }
             try
             {
+                var CategoryToUpdate = Context.Entry(IsExist);
+                CategoryToUpdate.CurrentValues.SetValues(category);
 
-                _context.Categories.Update(category);
-                _context.SaveChanges();
+                CategoryToUpdate.State = EntityState.Modified;
+                Context.SaveChanges();
+
+                
             }
             catch (Exception ex)
             {
-                _context.Entry(category).State = EntityState.Detached;
+                Context.Entry(IsExist).State = EntityState.Detached;
                 throw;
             }
-            return category;
+            return IsExist;
         }
     }
 }

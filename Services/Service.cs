@@ -6,7 +6,10 @@ namespace ReadBookMuds.Services
 {
     public partial class Service
     {
-        
+        ReadBookContext Context
+        {
+            get { return this._context; }
+        }
         private readonly ReadBookContext _context;
         private readonly NavigationManager UriHelper;
         public Service(ReadBookContext context, NavigationManager navigation)
