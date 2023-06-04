@@ -8,6 +8,7 @@ using ReadBookMuds.Areas.Identity;
 using ReadBookMuds.Data;
 using MudBlazor.Services;
 using ReadBookMuds.Services;
+using Microsoft.AspNetCore.Authorization;
 // 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,14 +18,21 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddDbContext<ReadBookContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 },ServiceLifetime.Transient);
-
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+/// AddPolicy
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireRole("AdminRole"));
+});
+
+
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddScoped<Service>();
 builder.Services.AddMudServices();
