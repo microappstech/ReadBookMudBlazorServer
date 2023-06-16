@@ -15,7 +15,6 @@ namespace ReadBookMuds.Data
             builder.Entity<Book>()
                 .Property(c => c.DateAdd)
                 .HasColumnType("datetime");
-
             builder.Entity<Book>().
                 HasKey(i => i.Id);
             
@@ -28,19 +27,8 @@ namespace ReadBookMuds.Data
                 .HasForeignKey(b => b.CategoryId)
                 .HasPrincipalKey(c => c.Id);
 
-            builder.Entity<DemandBook>()
-                .HasKey(db => db.id);
-
-            builder.Entity<DemandBook>()
-                .HasOne(d => d.book)
-                .WithMany(b => b.DemandsBooks)
-                .HasForeignKey(d => d.bookId)
-                .HasPrincipalKey(b => b.Id);
-
-
         }
         public DbSet<Book> Books { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<DemandBook> DemandsBooks { get; set; }
     }
 }

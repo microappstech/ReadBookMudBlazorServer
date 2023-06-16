@@ -82,46 +82,6 @@ namespace ReadBookMuds.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("ReadBookMuds.Models.DemandBook", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<string>("Addresse")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("bookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("nbr")
-                        .HasColumnType("int");
-
-                    b.Property<string>("phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("bookId");
-
-                    b.ToTable("DemandBook");
-                });
-
             modelBuilder.Entity("ReadBookMuds.Models.Book", b =>
                 {
                     b.HasOne("ReadBookMuds.Models.Category", "Category")
@@ -131,22 +91,6 @@ namespace ReadBookMuds.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("ReadBookMuds.Models.DemandBook", b =>
-                {
-                    b.HasOne("ReadBookMuds.Models.Book", "book")
-                        .WithMany("DemandsBooks")
-                        .HasForeignKey("bookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("book");
-                });
-
-            modelBuilder.Entity("ReadBookMuds.Models.Book", b =>
-                {
-                    b.Navigation("DemandsBooks");
                 });
 
             modelBuilder.Entity("ReadBookMuds.Models.Category", b =>
