@@ -1,0 +1,35 @@
+﻿@page "/allbooks"
+
+
+<div>
+    help
+</div>
+<MudContainer class="row">
+    <ChildContent >
+        <div class="row card-deck">
+            @foreach(var book in allBooks)
+            {
+                <div class="col-sm-4 mb-2">
+                    <MudCard Class="card">
+                        <MudCardMedia Image="@book.Icon" Height="200" />
+                        <MudCardContent>
+                            <MudText Typo="Typo.h5">@book.Title</MudText>
+                            <MudText Typo="Typo.body2"><label class="text-muted">Description :</label> @book.Description.</MudText>
+                            <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
+                        </MudCardContent>
+
+                        <MudCardActions>
+                            <MudButton Href="@string.Concat("/demand/",book.Id,"/",book.Title)"
+                                   Rel="nofollow noopener"
+                                   Variant="Variant.Outlined"
+                                   EndIcon="@Icons.Material.Filled.Sell"
+                                   Color="Color.Tertiary">
+                                Domand It
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </div>
+            }
+        </div>
+    </ChildContent>
+</MudContainer>

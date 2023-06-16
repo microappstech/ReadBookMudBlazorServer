@@ -4,6 +4,7 @@
 @inject Service ServiceCategory
 @inject NavigationManager NavigationManager 
 
+
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
@@ -24,33 +25,3 @@
 </MudGrid>
 
 
-@code {
-    MudForm formCate;
-    public Category Category ;
-    [Inject]
-    protected NavigationManager UriHelper { get; set; }
-    protected override async Task OnInitializedAsync()
-    {
-        Category  = new Category();
-    }
-    public async Task Save()
-    {
-        try
-        {
-            var resultSave = await ServiceCategory.CreateCategory(Category);
-            if(resultSave!=null){
-                await InvokeAsync(StateHasChanged);
-                UriHelper.NavigateTo("/categories",true);
-            }
-        }
-        catch(Exception ex)
-        {
-            
-        }
-
-
-    }
-
-    bool success;
-    string[] errors = { };
-}

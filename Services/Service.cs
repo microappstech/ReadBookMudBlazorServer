@@ -21,5 +21,10 @@ namespace ReadBookMuds.Services
         {
             _context.ChangeTracker.Entries().Where(e => e.Entity != null).ToList().ForEach(en => en.State = EntityState.Detached);
         }
+
+        public void NavigateTo(string url, bool reload = false)
+        {
+            UriHelper.NavigateTo(url, reload);
+        }
     }
 }

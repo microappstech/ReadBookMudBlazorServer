@@ -24,6 +24,7 @@
         <PropertyColumn Property="x => x.Title" />
         <PropertyColumn Property="x => x.Datepublication" Title="Date de publication" />
         <PropertyColumn Property="x => x.DateAdd" Title="date" />
+        <PropertyColumn Property="x => x.Author" />
         <PropertyColumn Property="x => x.Category.Name" Title="Category" />
         <PropertyColumn Property="x => x.Price" Format="C" />
         <TemplateColumn>
@@ -45,31 +46,4 @@
     </Columns>
 </MudDataGrid>
 
-@code {
-    public List<Book> Books;
-    protected override async Task OnInitializedAsync()
-    {
-        Books = await ServiceBook.GetBooks();
-    }
 
-
-
-    private async void Confirm(int id)
-    {
-        var parameters = new DialogParameters();
-        parameters.Add("ContentText", "Are you sure you want to remove this book");
-        parameters.Add("ButtonText", "Yes");
-        parameters.Add("Color", Color.Success);
-
-        var result = await DialogServicee.Show<Dialog>("Confirm", parameters).Result;
-        if (!result.Cancelled)
-        {
-            var resultdelete = await ServiceBook.DeleteBook(id);
-            Books = await ServiceBook.GetBooks();
-            await InvokeAsync(StateHasChanged);
-        }
-    }
-
-
-
-}

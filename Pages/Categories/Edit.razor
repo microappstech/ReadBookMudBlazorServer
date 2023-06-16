@@ -21,21 +21,3 @@
 </MudGrid>
 
 
-@code {
-    [Parameter]
-    public int id { get; set; }
-    MudForm formCate;
-    public Category Category = new Category();
-    protected override async Task OnInitializedAsync()
-    {
-        Category = await ServiceCategory.GetSingleCategory(id);
-    }
-    public async Task Save()
-    {
-        var resultSave = await ServiceCategory.EditCategory(id, Category);
-        NavigationManager.NavigateTo("/categories", true);
-    }
-
-    bool success;
-    string[] errors = { };
-}

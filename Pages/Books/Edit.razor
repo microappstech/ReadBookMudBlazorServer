@@ -87,39 +87,3 @@
 </MudGrid>
 
 
-@code {
-    [Parameter]
-    public int Id { get; set; }
-    [Inject]
-    NavigationManager uriHelper { get; set; }
-    public Book book { get; set; }
-    List<Category> Categories = new List<Category>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        book = await ServiceBook.GetSingleBook(Id);
-        Categories = await ServiceBook.GetCategories();
-    }
-
-    public async void UploadIcon(IBrowserFile icon)
-    {
-        MemoryStream ms = new MemoryStream();
-        await icon.OpenReadStream(maxAllowedSize:10*1024*1024).CopyToAsync(ms);
-        var bytes = ms.ToArray();
-        string base64ImageRepresentation = Convert.ToBase64String(bytes);
-        book.Icon = "data:image/png;base64," + base64ImageRepresentation;
-
-    }
-
-
-    bool success;
-    string[] errors = { };
-    MudTextField<string> pwField1;
-    MudForm form;
-    public async Task Save()
-    {
-        var resultSave = await ServiceBook.EditBook(book);
-        uriHelper.NavigateTo("/books", true);
-    }
-
-}

@@ -9,10 +9,11 @@ namespace ReadBookMuds.Services
 {
     public partial class Service 
     {
-        public async Task<List<Book>> GetBooks()
+        public async Task<IEnumerable<Book>> GetBooks()
         {
-            var items = await _context.Books.Include(c=>c.Category).ToListAsync();
-            return items;
+            var items = _context.Books.AsQueryable();
+            items = items.Include(b => b.Category);
+            return items.ToList();
         }
         public async Task<Book> GetSingleBook(int id)
         {
