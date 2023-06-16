@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReadBookMuds.Data;
 
@@ -11,9 +12,10 @@ using ReadBookMuds.Data;
 namespace ReadBookMuds.Migrations
 {
     [DbContext(typeof(ReadBookContext))]
-    partial class ReadBookContextModelSnapshot : ModelSnapshot
+    [Migration("20230616222759_ad column email ")]
+    partial class adcolumnemail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
