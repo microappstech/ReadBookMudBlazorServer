@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReadBookMuds.Data;
 
@@ -11,9 +12,10 @@ using ReadBookMuds.Data;
 namespace ReadBookMuds.Migrations
 {
     [DbContext(typeof(ReadBookContext))]
-    partial class ReadBookContextModelSnapshot : ModelSnapshot
+    [Migration("20230615213445_Add table demand book")]
+    partial class Addtabledemandbook
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,14 +99,7 @@ namespace ReadBookMuds.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("bookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("nbr")
                         .HasColumnType("int");
 
                     b.Property<string>("phone")
