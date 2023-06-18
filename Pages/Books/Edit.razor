@@ -9,9 +9,9 @@
         <MudPaper Class="pa-4">
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" OnValidSubmit="@Save">
                 <MudTextField T="string" Label="Title" Required="true" @bind-Value="@book.Title" RequiredError="Title is Required"></MudTextField>
-                <MudTextField T="string" Label="Description" Required="true" @bind-Value="@book.Description" RequiredError="Description is Required"></MudTextField>
+                <MudTextField T="string" Label="Description" InputType="InputType.Text"  Required="true" @bind-Value="@book.Description" RequiredError="Description is Required"></MudTextField>
                 <MudNumericField T="Decimal" Label="Price" Required="true" @bind-Value="@book.Price" RequiredError="Price is Required"></MudNumericField>
-                <MudDatePicker T="DateTime" Label="Date Publication" Required="true" @bind-Value="@book.Datepublication" RequiredError="Date is Required"></MudDatePicker>
+                <MudDatePicker Label="Date Publication" Required="true" @bind-Value="@book.Datepublication" RequiredError="Date is Required"></MudDatePicker>
                 <MudSelect Dense="true" T="int" @bind-Value="@book.CategoryId" Label="Category" Variant="Variant.Filled">
                     @foreach (var cate in Categories)
                     {

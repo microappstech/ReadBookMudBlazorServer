@@ -1,0 +1,43 @@
+﻿@page "/orderbooks"
+
+
+<PageTitle>Books</PageTitle>
+
+
+<div class="row d-flex mb-3">
+    <div class="col-md-4 d-flex justify-content-between">
+        <MudButton Variant="Variant.Filled" Size="@Size.Medium" StartIcon="@Icons.Material.Filled.Add" Link="/createbook" Color="Color.Primary">Add</MudButton>
+        <MudButton Variant="Variant.Filled" Size="@Size.Medium" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete Selected</MudButton>
+    </div>
+</div>
+<MudDataGrid Items="@Orders" Filterable="false" SortMode="@SortMode.None" Groupable="false">
+    <Columns>
+        <SelectColumn T="DemandBook" />
+        @*<TemplateColumn CellClass="d-flex justify-end p-2 m-0">
+            <CellTemplate>
+                <MudImage style="border-radius:50%;width:40px; height:40px;" Src="@context.Item.Icon.ToString()" Alt="text"></MudImage>
+            </CellTemplate>
+        </TemplateColumn>*@
+        <PropertyColumn Property="x => x.username" />
+        <PropertyColumn Property="x => x.book.Title" />
+        <PropertyColumn Property="x => x.nbr" Title="Quantite" />
+        <PropertyColumn Property="x => x.phone" />
+        <PropertyColumn Property="x => x.Created" Title="Demandedat" />
+        <TemplateColumn  Title="Totals ($)">
+            <CellTemplate>
+                <MudText>@(context.Item.nbr * context.Item.book.Price)</MudText>
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn CellClass="p-0 m-0">
+            <CellTemplate>
+                <MudStack Row>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete" OnClick="@(()=>Delete(context.Item.id))"></MudIconButton>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Edit" Href="@("/editdemand/"+context.Item.id)"></MudIconButton>
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>
+
+

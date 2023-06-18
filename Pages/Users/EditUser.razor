@@ -1,0 +1,104 @@
+﻿@page "/edituser/{id}"
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using ReadBookMuds.Areas.IdentityServices;
+@using ReadBookMuds.Data.Constant
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudForm @bind-IsValid="@formIsValid" >
+                
+                <MudTextField T="string" Label="Full Name" Required="true" @bind-Value="@User.FullName" RequiredError="FullName is Required"></MudTextField>
+                <MudTextField T="string" Label="Username" Required="true" @bind-Value="@User.UserName" RequiredError="Username is Required"></MudTextField>
+                <MudTextField T="string" Label="Email" InputType="InputType.Email" Required="true" @bind-Value="@User.Email" RequiredError="Email is Required"></MudTextField>
+                <MudTextField T="string" Label="Phone Number" Required="false" @bind-Value="@User.PhoneNumber" RequiredError="Phone is Required"></MudTextField>
+                <MudTextField T="string" Label="Password" InputType="InputType.Password" Required="true" @bind-Value="@Password" RequiredError="Password is Required"></MudTextField>
+                <MudTextField T="string" Label="Confirm Password" InputType="InputType.Password" Required="true" @bind-Value="@ConfirmPassword" RequiredError="Confirm Password is Required"></MudTextField>
+
+                <MudSelect T="string"  @bind-SelectedValues="@roles" Label="Roles" MultiSelection="true" Variant="Variant.Filled">
+                    @foreach (var role in Enum.GetNames(typeof(Roles)).ToList())
+                    {
+                        <MudSelectItem Value="@(role)">@role</MudSelectItem>
+                    }
+                </MudSelect>
+                <div class="row">
+                    <MudImage Style="height:60px;width:60px; margin:10px;" Alt="@User.FullName" Src="@User.Icon"></MudImage>
+                    <MudFileUpload T="IBrowserFile" FilesChanged="UploadIcon">
+                        <ButtonTemplate>
+                            <MudIconButton HtmlTag="label"
+                                           Color="Color.Info"
+                                           Icon="@Icons.Material.Filled.PhotoCamera"
+                                           for="@context">
+                            </MudIconButton>
+                        </ButtonTemplate>
+                    </MudFileUpload>
+                </div>
+                
+                <div class="d-flex align-center justify-space-between">
+                    <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" OnClick="@(()=> Save())" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Save" Disabled="@(!formIsValid)" Class="ml-auto">Save</MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+    @*<MudItem xs="12" sm="5">
+        <MudPaper Class="pa-4 mud-height-full text-center">
+            <MudImage Style="height:60px;width:60px; margin:10px;" Alt="@User.FullName" Src="@User.Icon"></MudImage><br />
+            <em><strong>@User.FullName</strong></em>
+            <div class="text-start">
+                <div>
+                    <small>Email : </small>
+                    <span>@User.Email</span>
+                </div><br />
+                <div>
+                    <small>Username : </small>
+                    <span>@User.UserName</span>
+                </div><br />
+                <div>
+                    <small>Phone :</small>
+                    <small>
+                        <p>@User.PhoneNumber</p>
+                    </small>
+                </div>
+            </div>
+
+
+
+
+        </MudPaper>
+    </MudItem>*@
+</MudGrid>
+
+
+@code{
+    public bool formIsValid { get; set; }
+
+    [Parameter]
+    public string? Id { get; set; }
+    [Inject] public Security Security{ get; set; }
+    protected ApplicationUser User { get; set; }
+    public IEnumerable<string> roles { get; set; } = new List<string> { Roles.User.ToString() };
+    public string? Password { get; set; }
+    public string? ConfirmPassword { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        User = await Security.GetUser(Id);
+
+    }
+    public async void UploadIcon(IBrowserFile icon)
+    {
+        MemoryStream ms = new MemoryStream();
+        await icon.OpenReadStream(maxAllowedSize : 15 * 1024 * 1024).CopyToAsync(ms);
+        var bytes = ms.ToArray();
+
+        string base64 = Convert.ToBase64String(bytes);
+        User.Icon = "data:image/png;base64," + base64;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public async Task Save()
+    {
+        User.Roles = roles.ToList();
+        var result = await Security.Edit(Id, User);
+    }
+}

@@ -1,0 +1,40 @@
+﻿
+@page "/users"
+@using ReadBookMuds.Models.Identity;
+
+<PageTitle>Books</PageTitle>
+
+
+<div class="row d-flex mb-3">
+    <div class="col-md-4 d-flex justify-content-between">
+        <MudButton Variant="Variant.Filled" Size="@Size.Medium" StartIcon="@Icons.Material.Filled.Add" Link="/createuser" Color="Color.Primary">Add</MudButton>
+        <MudButton Variant="Variant.Filled" Size="@Size.Medium" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete Selected</MudButton>
+    </div>
+</div>
+<MudDataGrid Items="@AllUsers" Filterable="false" SortMode="@SortMode.None" Groupable="false">
+    <Columns>
+        <SelectColumn T="ApplicationUser" />
+        <TemplateColumn CellClass="d-flex justify-end p-2 m-0">
+            <CellTemplate>
+                <MudImage style="border-radius:50%;width:40px; height:40px;" Src="@context.Item.Icon?.ToString()" Alt="text"></MudImage>
+            </CellTemplate>
+        </TemplateColumn>
+        <PropertyColumn Property="x => x.FullName" />
+        <PropertyColumn Property="x => x.Email" />
+        <PropertyColumn Property="x => x.UserName" Title="Quantite" />
+        <PropertyColumn Property="x => x.PhoneNumber" />
+        <PropertyColumn Property="x => x.LastSeen" />
+        
+
+            <TemplateColumn CellClass="p-0 m-0">
+                <CellTemplate>
+                    <MudStack Row>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete" OnClick="@(()=>Delete(context.Item.Id))"></MudIconButton>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Edit" Href="@("/edituser/"+context.Item.Id)"></MudIconButton>
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>
+
+

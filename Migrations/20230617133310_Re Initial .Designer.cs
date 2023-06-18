@@ -12,8 +12,8 @@ using ReadBookMuds.Data;
 namespace ReadBookMuds.Migrations
 {
     [DbContext(typeof(ReadBookContext))]
-    [Migration("20230616222759_ad column email ")]
-    partial class adcolumnemail
+    [Migration("20230617133310_Re Initial ")]
+    partial class ReInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,6 +98,9 @@ namespace ReadBookMuds.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("Dilivred")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Email")
                         .IsRequired()

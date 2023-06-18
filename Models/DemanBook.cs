@@ -16,7 +16,7 @@ namespace ReadBookMuds.Models
         [Required] public string Addresse { get; set; }
         [Required] public string Email { get; set; }
         [Required] public int nbr { get; set; }
-
+        public bool Dilivred { get; set; } = false;
         public DateTime Created { get; set; } = DateTime.Now;
 
 

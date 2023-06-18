@@ -1,0 +1,55 @@
+﻿@page "/editdemand/{id:int}"
+@using System.ComponentModel.DataAnnotations
+@inject ISnackbar snackbar
+
+<PageTitle>Editer la Demande</PageTitle>
+
+<div class="row">
+    <MudForm @bind-IsValid="@formIsValid" Class="col-sm-6">
+        <MudTextField Class="my-2" T="string" Label="Full Name" Required="true" @bind-Value="@(demandBook.username)" RequiredError="full name is Required"></MudTextField>
+        <MudTextField Class="my-2" T="string" InputType="InputType.Telephone" Label="Phone number" Required="true" @bind-Value="@(demandBook.phone)" RequiredError="Phone is Required"></MudTextField>
+        <MudTextField Class="my-2" T="string" InputType="InputType.Email" Validation=@(new EmailAddressAttribute() {ErrorMessage="The email address is invalid"}) Label="Email" Required="true" @bind-Value="@(demandBook.Email)" RequiredError="Email is Required"></MudTextField>
+        <MudTextField Class="my-2" T="string" Label="Addresse " Required="true" @bind-Value="@(demandBook.Addresse)" RequiredError="Adress is Required"></MudTextField>
+        <MudTextField Class="my-2" T="int" Label="Quantite" Required="true" @bind-Value="@(demandBook.nbr)"></MudTextField>
+
+        <div class="d-flex align-center my-4 col-sm-7 text-center">
+            <MudButton IconClass="col-sm-3" Variant="Variant.Filled" Disabled="@(!formIsValid)" ButtonType="ButtonType.Submit" @onclick="@(()=>Save())" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Save" Class="ml-auto">Submit </MudButton>
+        </div>
+    </MudForm>
+
+    <MudCard Class="col-sm-4">
+        <div class="row my-4">
+            <MudImage src="@demandBook.book?.Icon" Class="col-sm-3 mx-auto" Height="60" />
+            <h3 class="text-center col-sm-12">@demandBook.book?.Title</h3>
+        </div>
+        <div class="row my-4">
+            <span class="col-sm-5">Name : </span>
+            <span class="col-sm-5">@demandBook.username</span>
+        </div>
+        <div class="row my-4">
+            <span class="col-sm-5">Adresse : </span>
+            <span class="col-sm-5">@demandBook.Addresse</span>
+        </div>
+        <div class="row my-4">
+            <span class="col-sm-5">Email : </span>
+            <span class="col-sm-5">@demandBook.Email</span>
+        </div>
+        <div class="row my-4">
+            <span class="col-sm-5">Phone : </span>
+            <span class="col-sm-5">@demandBook.phone</span>
+        </div>
+        <div class="row my-4 ">
+            <span class="col-sm-5">Quantite</span>
+            <span class="col-sm-5">@demandBook.nbr</span>
+        </div>
+        <div class="row my-4 row">
+            <div class="col-sm-5">
+                <span class="col-sm-5">Price :<span class="text-success"> @demandBook.book?.Price $</span></span>
+            </div>
+            <div class="col-sm-5">
+                <span class="col-sm-5 ">Totals : <span class="text-success">@(demandBook.book?.Price * demandBook.nbr) $</span> </span>
+            </div>
+        </div>
+    </MudCard>
+</div>
+
